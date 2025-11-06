@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jangan Ngambek, ya Cantikkk 💖</title>
+  <style>
+    :root{
+      --bg:#FFF7FB;
+      --card:#ffffff;
+      --accent:#ff6b9a;
+      --muted:#6b7280;
+      --shadow:0 10px 30px rgba(15,23,42,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,#FFF7FB 0%,#FFF0F6 100%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:720px;
+      background:var(--card);
+      border-radius:18px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:1fr 300px;
+      gap:20px;
+      align-items:center;
+    }
+    h1{margin:0 0 8px;font-size:28px;color:#111827}
+    p{margin:0 0 16px;color:var(--muted)}
+    button{
+      cursor:pointer;
+      border-radius:12px;
+      padding:12px 16px;
+      font-weight:600;
+    }
+    .primary{
+      background:linear-gradient(90deg,var(--accent),#ff8aa6);
+      border:none;
+      color:#fff;
+      box-shadow:0 6px 18px rgba(255,107,154,0.28);
+    }
+    .ghost{
+      background:transparent;
+      border:1px solid #fde4ef;
+      color:var(--accent);
+    }
+    .heart{
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      background:linear-gradient(180deg,#fff,#fff0f6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 30px rgba(255,107,154,0.12);
+    }
+    .bubble{
+      margin-top:14px;
+      padding:12px 14px;
+      background:#fff2f6;
+      border-radius:12px;
+      border:1px solid rgba(255,107,154,0.08);
+      color:#6b2135;
+      display:inline-block;
+      font-weight:600;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.08)}
+      100%{transform:scale(1)}
+    }
+    .forgiven .heart{animation:pulse 1s ease-in-out 3}
+    #confetti-canvas{pointer-events:none;position:fixed;inset:0;z-index:99}
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <main class="card" id="card">
+    <section>
+      <h1>Jangan ngambek, ya cantikkk 💖</h1>
+      <p>Hai <b>icaa</b>, aku nggak jail lagi dehh 😔  
+         Maafin aku yaa kalau bikin badmood dan ngambek.  
+         Jangan ngambek sama akuu nanti aku kesepian, sedih, dan pingsan dehh.. 🥺</p>
+
+      <div>
+        <button class="primary" id="forgiveBtn">iyaa icaa maafin 🙈</button>
+        <button class="ghost" id="hugBtn">ica kasih Peluk virtual 🤗</button>
+      </div>
+
+      <div class="bubble" id="bubble">
+        Klik tombol di atas kalo icaa udah nggak ngambek lagi sama gegee 💕
+      </div>
+    </section>
+
+    <aside>
+      <div class="heart" id="heartWrap">
+        <svg width="84" height="84" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21s-7-4.35-9.2-7.05C-0.02 9.83 3.6 5.5 7.5 7.5c1.9 1 2.7 3 2.7 3s.8-2 2.7-3C20.4 5.5 24.02 9.83 21.2 13.95 19 16.65 12 21 12 21z" fill="#ff6b9a"/>
+        </svg>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const card=document.getElementById('card');
+    const forgiveBtn=document.getElementById('forgiveBtn');
+    const hugBtn=document.getElementById('hugBtn');
+    const bubble=document.getElementById('bubble');
+    const heart=document.getElementById('heartWrap');
+    const canvas=document.getElementById('confetti-canvas');
+    const ctx=canvas.getContext('2d');
+    let W=canvas.width=innerWidth,H=canvas.height=innerHeight;
+    window.onresize=()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight};
+
+    function confetti(x,y,count=60){
+      let p=[];
+      for(let i=0;i<count;i++){
+        p.push({
+          x:x+Math.random()*40-20,
+          y:y+Math.random()*40-20,
+          vx:Math.random()*6-3,
+          vy:Math.random()*-8-2,
+          size:Math.random()*8+4,
+          color:`hsl(${Math.random()*360},80%,70%)`,
+          life:80
+        });
+      }
+      (function draw(){
+        ctx.clearRect(0,0,W,H);
+        p.forEach(pt=>{
+          pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.25;pt.life--;
+          ctx.fillStyle=pt.color;
+          ctx.fillRect(pt.x,pt.y,pt.size,pt.size*0.6);
+        });
+        p=p.filter(pt=>pt.life>0);
+        if(p.length)requestAnimationFrame(draw);
+      })();
+    }
+
+    forgiveBtn.onclick=()=>{
+      card.classList.add('forgiven');
+      bubble.textContent="Yeaay icaa udah nggak ngambek 💕 aku janji nggak jail lagi dehh!";
+      confetti(innerWidth/2,innerHeight/3,80);
+      forgiveBtn.disabled=true;
+    };
+    hugBtn.onclick=()=>{
+      bubble.textContent="🤗 Pelukan virtual terkirim ke gegeee~";
+      const r=heart.getBoundingClientRect();
+      confetti(r.left+r.width/2,r.top+r.height/2,40);
+    };
+  </script>
+</body>
+</html>
